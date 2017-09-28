@@ -1,3 +1,4 @@
+import Config.ConfigurationReader;
 import Observerable.QuakeObservable;
 
 import javax.swing.*;
@@ -6,12 +7,20 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class main {
+public class Launcher {
+
     public static void main(String[] args) {
+        new Launcher();
+    }
+
+    private ConfigurationReader configurationReader;
+
+    public Launcher(){
+        configurationReader = ConfigurationReader.getInstance();
         setUpGradientButtons();
 
         JFrame frame = new JFrame("Quake");
-        JLabel backgroundImage = new JLabel(new ImageIcon(main.class.getResource("abstract_dark.jpg")));
+        JLabel backgroundImage = new JLabel(new ImageIcon(Launcher.class.getResource("abstract_dark.jpg")));
         backgroundImage.setPreferredSize(new Dimension(CommonTimeUtils.PREFFERED_WIDHT, 280));
         frame.setContentPane(backgroundImage);
 
@@ -25,14 +34,14 @@ public class main {
         //create observable
         QuakeObservable quakeObservable = new QuakeObservable();
         //create observers
-        ImageIcon yellowArmorPic = getResizedImageIcon(new ImageIcon(main.class.getResource("yellow_armor.jpg")));
-        EntityTimer yellowArmor = new EntityTimer(25000);
+        ImageIcon yellowArmorPic = getResizedImageIcon(new ImageIcon(Launcher.class.getResource("yellow_armor.jpg")));
+        EntityTimer yellowArmor = new EntityTimer(configurationReader.getArmorTimes().getYellow_armor_time());
 
-        ImageIcon redArmorPic = getResizedImageIcon(new ImageIcon(main.class.getResource("red_armor.jpg")));
-        EntityTimer redArmor = new EntityTimer(35000);
+        ImageIcon redArmorPic = getResizedImageIcon(new ImageIcon(Launcher.class.getResource("red_armor.jpg")));
+        EntityTimer redArmor = new EntityTimer(configurationReader.getArmorTimes().getRed_armor_time());
 
-        ImageIcon megaPic = getResizedImageIcon(new ImageIcon(main.class.getResource("mega.jpg")));
-        EntityTimer mega = new EntityTimer(35000);
+        ImageIcon megaPic = getResizedImageIcon(new ImageIcon(Launcher.class.getResource("mega.jpg")));
+        EntityTimer mega = new EntityTimer(configurationReader.getArmorTimes().getMega_health_time());
 
         QuakeTimer quakeTimer = new QuakeTimer(quakeObservable);
 
@@ -49,6 +58,7 @@ public class main {
         startGame.setForeground(new Color(0,0,0));
         startGame.setFocusPainted(false);
         startGame.addActionListener((e) -> quakeTimer.startTimer());
+        startGame.addKeyListener(new StartGameKeyListener(quakeTimer,configurationReader));
         buttonPanel.add(startGame, BorderLayout.CENTER);
 
         //Add everything

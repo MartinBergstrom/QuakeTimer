@@ -13,7 +13,7 @@ public class QuakeTimer extends JLabel {
         super("", SwingConstants.CENTER);
         this.quakeObservable = observable;
         this.setPreferredSize(new Dimension(CommonTimeUtils.PREFFERED_WIDHT,20));
-        this.setFont(new Font("Impact", Font.PLAIN, 24));
+        this.setFont(new Font("Impact", Font.PLAIN, 30));
         this.setForeground(new Color(195,0,0));
 
         timer = new Timer(1000, (e) -> {

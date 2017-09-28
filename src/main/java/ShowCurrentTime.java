@@ -9,7 +9,7 @@ public class ShowCurrentTime extends JLabel {
     public ShowCurrentTime(){
         super("",SwingConstants.CENTER);
         this.setPreferredSize(new Dimension(CommonTimeUtils.PREFFERED_WIDHT,20));
-        this.setForeground(Color.WHITE);
+        this.setForeground(new Color(127, 127, 127));
 
         simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 

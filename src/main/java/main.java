@@ -1,25 +1,18 @@
 import Observerable.QuakeObservable;
 
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class main {
     public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
+        setUpGradientButtons();
 
         JFrame frame = new JFrame("Quake");
         JLabel backgroundImage = new JLabel(new ImageIcon(main.class.getResource("abstract_dark.jpg")));
-        backgroundImage.setPreferredSize(new Dimension(CommonTimeUtils.PREFFERED_WIDHT, 300));
+        backgroundImage.setPreferredSize(new Dimension(CommonTimeUtils.PREFFERED_WIDHT, 280));
         frame.setContentPane(backgroundImage);
 
         frame.setAlwaysOnTop(true);
@@ -47,12 +40,21 @@ public class main {
         quakeObservable.addObserver(redArmor);
         quakeObservable.addObserver(mega);
 
+        //Button
+        JPanel buttonPanel = new JPanel(new BorderLayout());
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(12,15,11,15));
+        buttonPanel.setOpaque(false);
         JButton startGame = new JButton("Start game");
+        startGame.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+        startGame.setForeground(new Color(0,0,0));
+        startGame.setFocusPainted(false);
         startGame.addActionListener((e) -> quakeTimer.startTimer());
+        buttonPanel.add(startGame, BorderLayout.CENTER);
 
+        //Add everything
         frame.add(new ShowCurrentTime(), BorderLayout.NORTH);
         mainPanel.setOpaque(false);
-        mainPanel.add(startGame);
+        mainPanel.add(buttonPanel);
         mainPanel.add(quakeTimer);
         mainPanel.add(createEntityPanel(yellowArmorPic, yellowArmor));
         mainPanel.add(createEntityPanel(redArmorPic, redArmor));
@@ -63,6 +65,23 @@ public class main {
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private static void setUpGradientButtons() {
+        try {
+            UIManager manager=new UIManager();
+            List<Object> a=new LinkedList<>();
+            a.add(0.3);
+            a.add(0.3);
+            a.add(new ColorUIResource(41, 41, 41));
+            a.add(new ColorUIResource(96, 95, 88));
+            a.add(new ColorUIResource(0, 0, 0));
+
+            manager.put("Button.gradient",a);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private static ImageIcon getResizedImageIcon(ImageIcon icon){

@@ -11,7 +11,7 @@ public class EntityTimer extends JLabel implements Observer<Long> {
         super("", JLabel.RIGHT);
         this.setPreferredSize(new Dimension(CommonTimeUtils.PREFFERED_WIDHT, 50));
         this.offset = initialOffset;
-        this.setFont(new Font("Impact", Font.PLAIN, 18));
+        this.setFont(new Font("Impact", Font.PLAIN, 24));
         this.setForeground(new Color(165,0,0));
     }
 

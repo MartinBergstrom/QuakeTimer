@@ -1,5 +1,6 @@
 package Config;
 
+import Entity.EntityTimerTypes;
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
 
@@ -10,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigurationReader {
+public class ConfigurationReader implements ConfigurationProvider {
     private List<Character> keyBindings;
     private ArmorTimes armorTimes;
 
@@ -27,6 +28,7 @@ public class ConfigurationReader {
 
     private ConfigurationReader(){}
 
+    @Override
     public void loadConfig(){
         Path path = Paths.get("Config.json");
         try {
@@ -48,10 +50,25 @@ public class ConfigurationReader {
         }
     }
 
+    @Override
     public List<Character> getKeyBindings(){
         return keyBindings;
     }
 
+    @Override
+    public char getKeyBindingForEntityType(EntityTimerTypes type) {
+        switch (type){
+            case YELLOW_ARMOR:
+                return keyBindings.get(0);
+            case RED_ARMOR:
+                return keyBindings.get(1);
+            case MEGA_HEALTH:
+                return keyBindings.get(2);
+        }
+        return 0;
+    }
+
+    @Override
     public ArmorTimes getArmorTimes(){
         return armorTimes;
     }

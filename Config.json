@@ -2,5 +2,5 @@
   "yellow_armor_time" : 25,
   "red_armor_time" : 25,
   "mega_health_time" : 35,
-  "key_bindings" : ["k", "p" , "5"]
+  "key_bindings" : ["y", "r" , "m"]
 }

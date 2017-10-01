@@ -1,3 +1,5 @@
+package Main;
+
 import Observerable.QuakeObservable;
 
 import javax.swing.*;

@@ -1,4 +1,9 @@
-import Config.ConfigurationReader;
+package Main;
+
+import Config.ConfigurationFactory;
+import Config.ConfigurationProvider;
+import Entity.EntityTimer;
+import Entity.EntityTimerTypes;
 import Observerable.QuakeObservable;
 
 import javax.swing.*;
@@ -13,14 +18,16 @@ public class Launcher {
         new Launcher();
     }
 
-    private ConfigurationReader configurationReader;
+    private static JFrame frame;
+    private ConfigurationProvider configurationProvider;
+    private static JPanel mainPanel;
 
     public Launcher(){
-        configurationReader = ConfigurationReader.getInstance();
+        configurationProvider = ConfigurationFactory.INSTANCE.getConfigurationProvider();
         setUpGradientButtons();
 
-        JFrame frame = new JFrame("Quake");
-        JLabel backgroundImage = new JLabel(new ImageIcon(Launcher.class.getResource("abstract_dark.jpg")));
+        frame = new JFrame("Quake");
+        JLabel backgroundImage = new JLabel(new ImageIcon(Launcher.class.getClassLoader().getResource("abstract_dark.jpg")));
         backgroundImage.setPreferredSize(new Dimension(CommonTimeUtils.PREFFERED_WIDHT, 280));
         frame.setContentPane(backgroundImage);
 
@@ -29,19 +36,22 @@ public class Launcher {
 
         frame.setLayout(new BorderLayout());
 
-        JPanel mainPanel = new JPanel(new GridLayout(5,1));
+        mainPanel = new JPanel(new GridLayout(5,1));
 
         //create observable
         QuakeObservable quakeObservable = new QuakeObservable();
+
+        //set up key binings
+        setUpKeyBindings();
         //create observers
-        ImageIcon yellowArmorPic = getResizedImageIcon(new ImageIcon(Launcher.class.getResource("yellow_armor.jpg")));
-        EntityTimer yellowArmor = new EntityTimer(configurationReader.getArmorTimes().getYellow_armor_time());
+        ImageIcon yellowArmorPic = getResizedImageIcon(new ImageIcon(Launcher.class.getClassLoader().getResource("yellow_armor.jpg")));
+        EntityTimer yellowArmor = new EntityTimer(configurationProvider.getArmorTimes().getYellowArmorTime(), EntityTimerTypes.YELLOW_ARMOR);
 
-        ImageIcon redArmorPic = getResizedImageIcon(new ImageIcon(Launcher.class.getResource("red_armor.jpg")));
-        EntityTimer redArmor = new EntityTimer(configurationReader.getArmorTimes().getRed_armor_time());
+        ImageIcon redArmorPic = getResizedImageIcon(new ImageIcon(Launcher.class.getClassLoader().getResource("red_armor.jpg")));
+        EntityTimer redArmor = new EntityTimer(configurationProvider.getArmorTimes().getRedArmorTime(), EntityTimerTypes.RED_ARMOR);
 
-        ImageIcon megaPic = getResizedImageIcon(new ImageIcon(Launcher.class.getResource("mega.jpg")));
-        EntityTimer mega = new EntityTimer(configurationReader.getArmorTimes().getMega_health_time());
+        ImageIcon megaPic = getResizedImageIcon(new ImageIcon(Launcher.class.getClassLoader().getResource("mega.jpg")));
+        EntityTimer mega = new EntityTimer(configurationProvider.getArmorTimes().getMegaHealthTime(), EntityTimerTypes.MEGA_HEALTH);
 
         QuakeTimer quakeTimer = new QuakeTimer(quakeObservable);
 
@@ -58,7 +68,6 @@ public class Launcher {
         startGame.setForeground(new Color(0,0,0));
         startGame.setFocusPainted(false);
         startGame.addActionListener((e) -> quakeTimer.startTimer());
-        startGame.addKeyListener(new StartGameKeyListener(quakeTimer,configurationReader));
         buttonPanel.add(startGame, BorderLayout.CENTER);
 
         //Add everything
@@ -75,6 +84,12 @@ public class Launcher {
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void setUpKeyBindings() {
+        for(EntityTimerTypes type : EntityTimerTypes.values()){
+            type.setKeyBinding(configurationProvider.getKeyBindingForEntityType(type));
+        }
     }
 
     private static void setUpGradientButtons() {
@@ -105,6 +120,7 @@ public class Launcher {
         panel.add(new JLabel(icon, JLabel.LEFT), BorderLayout.WEST);
         panel.add(timerPanel, BorderLayout.EAST);
         panel.setOpaque(false);
+        frame.addKeyListener(timerPanel);
         return panel;
     }
 }

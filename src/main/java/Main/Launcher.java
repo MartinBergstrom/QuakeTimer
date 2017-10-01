@@ -5,6 +5,9 @@ import Config.ConfigurationProvider;
 import Entity.EntityTimer;
 import Entity.EntityTimerTypes;
 import Observerable.QuakeObservable;
+import lc.kra.system.keyboard.GlobalKeyboardHook;
+import lc.kra.system.keyboard.event.GlobalKeyAdapter;
+import lc.kra.system.keyboard.event.GlobalKeyEvent;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -21,8 +24,11 @@ public class Launcher {
     private static JFrame frame;
     private ConfigurationProvider configurationProvider;
     private static JPanel mainPanel;
+    private static GlobalKeyboardHook globalKeyboardHook;
 
     public Launcher(){
+        globalKeyboardHook = new GlobalKeyboardHook(true);
+
         configurationProvider = ConfigurationFactory.INSTANCE.getConfigurationProvider();
         setUpGradientButtons();
 
@@ -46,6 +52,8 @@ public class Launcher {
         //create observers
         ImageIcon yellowArmorPic = getResizedImageIcon(new ImageIcon(Launcher.class.getClassLoader().getResource("yellow_armor.jpg")));
         EntityTimer yellowArmor = new EntityTimer(configurationProvider.getArmorTimes().getYellowArmorTime(), EntityTimerTypes.YELLOW_ARMOR);
+        //GlobalScreen.addNativeKeyListener(yellowArmor);
+
 
         ImageIcon redArmorPic = getResizedImageIcon(new ImageIcon(Launcher.class.getClassLoader().getResource("red_armor.jpg")));
         EntityTimer redArmor = new EntityTimer(configurationProvider.getArmorTimes().getRedArmorTime(), EntityTimerTypes.RED_ARMOR);
@@ -84,6 +92,19 @@ public class Launcher {
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(frame,
+                        "Are you sure to close this window?", "Really Closing?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                    globalKeyboardHook.shutdownHook();
+                    System.exit(0);
+                }
+            }
+        });
     }
 
     private void setUpKeyBindings() {
@@ -106,7 +127,6 @@ public class Launcher {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private static ImageIcon getResizedImageIcon(ImageIcon icon){
@@ -120,7 +140,7 @@ public class Launcher {
         panel.add(new JLabel(icon, JLabel.LEFT), BorderLayout.WEST);
         panel.add(timerPanel, BorderLayout.EAST);
         panel.setOpaque(false);
-        frame.addKeyListener(timerPanel);
+        globalKeyboardHook.addKeyListener(timerPanel);
         return panel;
     }
 }

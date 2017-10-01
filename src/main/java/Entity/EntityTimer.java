@@ -3,13 +3,16 @@ package Entity;
 import Main.CommonTimeUtils;
 import Observerable.Observer;
 import Observerable.Observerable;
+import lc.kra.system.keyboard.event.GlobalKeyAdapter;
+import lc.kra.system.keyboard.event.GlobalKeyEvent;
+import lc.kra.system.keyboard.event.GlobalKeyListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class EntityTimer extends JPanel implements Observer<Long>, KeyListener {
+public class EntityTimer extends JPanel implements Observer<Long>, GlobalKeyListener{
     private long offset;
     private JLabel mainTimerPanel;
     private JLabel snapshotLabel;
@@ -48,22 +51,15 @@ public class EntityTimer extends JPanel implements Observer<Long>, KeyListener {
         mainTimerPanel.setText(convertedTime + " ");
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
 
+    @Override
+    public void keyPressed(GlobalKeyEvent globalKeyEvent) {
+        //TODO
+        System.out.println(globalKeyEvent.getKeyChar());
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println("ANFJAHFWA");
-        if(e.getKeyChar() == myType.getKeybinding()){
-            System.out.println("pressed mytype key: " + e.getKeyChar() + " in type: " + this.myType.toString());
-        }
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(GlobalKeyEvent globalKeyEvent) {
 
     }
 }

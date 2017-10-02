@@ -6,8 +6,6 @@ import Entity.EntityTimer;
 import Entity.EntityTimerTypes;
 import Observerable.QuakeObservable;
 import lc.kra.system.keyboard.GlobalKeyboardHook;
-import lc.kra.system.keyboard.event.GlobalKeyAdapter;
-import lc.kra.system.keyboard.event.GlobalKeyEvent;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;

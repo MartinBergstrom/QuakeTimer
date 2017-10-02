@@ -9,6 +9,9 @@ import lc.kra.system.keyboard.event.GlobalKeyListener;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * JPanel representing the timer of a specific entity such as yello/red armor and mega health
+ */
 public class EntityTimer extends JPanel implements Observer<Long>, GlobalKeyListener{
     private long offset;
     private JLabel mainTimerPanel;

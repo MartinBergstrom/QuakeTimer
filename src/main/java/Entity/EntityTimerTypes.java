@@ -1,5 +1,8 @@
 package Entity;
 
+/**
+ * These enums will be initialized with values from config during start up
+ */
 public enum EntityTimerTypes {
     YELLOW_ARMOR('0'),
     RED_ARMOR('0'),

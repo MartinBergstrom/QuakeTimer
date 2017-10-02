@@ -3,14 +3,11 @@ package Entity;
 import Main.CommonTimeUtils;
 import Observerable.Observer;
 import Observerable.Observerable;
-import lc.kra.system.keyboard.event.GlobalKeyAdapter;
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
 import lc.kra.system.keyboard.event.GlobalKeyListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class EntityTimer extends JPanel implements Observer<Long>, GlobalKeyListener{
     private long offset;
@@ -35,7 +32,8 @@ public class EntityTimer extends JPanel implements Observer<Long>, GlobalKeyList
         snapshotLabel = new JLabel("", JLabel.RIGHT);
         snapshotLabel.setOpaque(false);
         snapshotLabel.setFont(new Font("Impact", Font.PLAIN, 24));
-        snapshotLabel.setForeground(new Color(228, 213, 210));
+        snapshotLabel.setForeground(new Color(174, 174, 174));
+        snapshotLabel.setEnabled(false);
 
         this.add(mainTimerPanel, BorderLayout.NORTH);
         this.add(snapshotLabel, BorderLayout.SOUTH);
@@ -54,12 +52,11 @@ public class EntityTimer extends JPanel implements Observer<Long>, GlobalKeyList
 
     @Override
     public void keyPressed(GlobalKeyEvent globalKeyEvent) {
-        //TODO
-        System.out.println(globalKeyEvent.getKeyChar());
+        if(globalKeyEvent.getKeyChar() == myType.getKeybinding()){
+            snapshotLabel.setText(mainTimerPanel.getText());
+        }
     }
 
     @Override
-    public void keyReleased(GlobalKeyEvent globalKeyEvent) {
-
-    }
+    public void keyReleased(GlobalKeyEvent globalKeyEvent) {}
 }

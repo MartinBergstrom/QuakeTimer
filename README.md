@@ -1,4 +1,4 @@
 # QuakeTimer
 Simple quake armor timer
 
-![alt tag](https://github.com/MartinBergstrom/MultichatTest/blob/master/ChatMaster3000.jpg)
+![alt tag](https://github.com/MartinBergstrom/QuakeTimer/blob/master/src/main/resources/printscreen.jpg)
